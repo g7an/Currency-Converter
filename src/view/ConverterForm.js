@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -16,21 +16,49 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
-
 const ConverterForm = () => {
-    const classes = useStyles();
+    const classes = useStyles()
 
-    const axios = require('axios');
+    const axios = require('axios')
+
+    const currencyCode = require('currency-codes')
+
+    let currencyList = currencyCode.codes()
+
+    let [fromCode, setFromCode] = useState('')
+
+    let [toCode, setToCode] = useState('')
+
+    
     
     useEffect(() => {
-        // const query = {q: 'USD_PHP', compact: 'ultra', apiKey: `${process.env.API_KEY}`}
         getUser()
     })
 
+
+    let cList = currencyList.length > 0
+		&& currencyList.map((item, i) => {
+		return (
+			<option key={i} value={item}>{item}</option>
+		)
+	}, this);
+
+    function handleFromChange(event) {
+        console.log(event.target.value)
+        setFromCode(event.target.value)
+    }
+
+    function handleToChange(event) {
+        console.log(event.target.value)
+        setToCode(event.target.value)
+    }
+
+    
+
     async function getUser() {
         try {
-          const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_PHP&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
-          console.log(response);
+          const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${fromCode}_${toCode}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
+          console.log(response)
         } catch (error) {
           console.error(error);
         }
@@ -43,16 +71,9 @@ const ConverterForm = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select">
-                <option aria-label="None" value="" />
-                {/* <optgroup label="Category 1"> */}
-                    <option value={1}>Option 1</option>
-                    <option value={2}>Option 2</option>
-                {/* </optgroup> */}
-                {/* <optgroup label="Category 2"> */}
-                    <option value={3}>Option 3</option>
-                    <option value={4}>Option 4</option>
-                {/* </optgroup> */}
+                <Select native defaultValue="" id="grouped-native-select" onChange={handleFromChange}>
+                <option aria-label="None" value="" /> 
+                 {cList}
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -67,37 +88,12 @@ const ConverterForm = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">To</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select">
+                <Select native defaultValue="" id="grouped-native-select" onChange={handleToChange}>
                 <option aria-label="None" value="" />
-                {/* <optgroup label="Category 1"> */}
-                    <option value={1}>Option 1</option>
-                    <option value={2}>Option 2</option>
-                {/* </optgroup> */}
-                {/* <optgroup label="Category 2"> */}
-                    <option value={3}>Option 3</option>
-                    <option value={4}>Option 4</option>
-                {/* </optgroup> */}
+                {cList}
                 </Select>
             </FormControl>
        </>
     )
 }
 export default ConverterForm
-
-
-
-
-//  <FormControl className={classes.formControl}>
-//         <InputLabel htmlFor="grouped-native-select">Grouping</InputLabel>
-//         <Select native defaultValue="" id="grouped-native-select">
-//           <option aria-label="None" value="" />
-//           <optgroup label="Category 1">
-//             <option value={1}>Option 1</option>
-//             <option value={2}>Option 2</option>
-//           </optgroup>
-//           <optgroup label="Category 2">
-//             <option value={3}>Option 3</option>
-//             <option value={4}>Option 4</option>
-//           </optgroup>
-//         </Select>
-//       </FormControl>
