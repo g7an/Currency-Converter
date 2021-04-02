@@ -11,6 +11,8 @@ import Typography from '@material-ui/core/Typography'
 import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
+import { CURRENCY_SYMBOL } from '../constants/data'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,13 +20,26 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       minWidth: 120,
     },
+    inputField: {
+        width: 100,
+    },
     root: {
         minWidth: 275,
-      },
+    },
+    optionField: {
+        width: 250,
+        fontSize: 14,
+    },
     bullet: {
         display: 'inline-block',
         margin: '0 2px',
         transform: 'scale(0.8)',
+    },
+    button: {
+        // marginLeft: 150,
+        // justifyContent: "flex-start",
+        // alignItems: "flex-start"
+        
     },
     title: {
         fontSize: 14,
@@ -37,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ConverterForm = () => {
     const classes = useStyles()
+    console.log(CURRENCY_SYMBOL.map(result => result.cc))
 
     // const axios = require('axios')
 
@@ -51,10 +67,9 @@ const ConverterForm = () => {
     let [amount, setAmount] = useState(1)
 
 
-    let cList = currencyList.length > 0
-		&& currencyList.map((item, i) => {
+    let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
-			<option key={i} value={item} >{item}</option>
+			<option key={i} value={item.cc}>{item.cc} - {item.name}</option>
 		)
 	});
 
@@ -88,11 +103,11 @@ const ConverterForm = () => {
         <>
          <Grid item xs={12}>
             <FormControl className={classes.formControl}>
-                <TextField id="standard-basic" name="amount" defaultValue="1" label="Amount" onChange={handleInputChange} />
+                <TextField className={classes.inputField} id="standard-basic" name="amount" defaultValue="1" label="Amount" onChange={handleInputChange} />
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
+                <Select native className={classes.optionField} defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
                 {cList}
                 </Select>
@@ -109,33 +124,26 @@ const ConverterForm = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">To</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select" value={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")}>
-                <option aria-label="None" value="" />
-                {cList}
+                <Select native className={classes.optionField} defaultValue="" 
+                        id="grouped-native-select" value={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")}>
+                    <option aria-label="None" value="" />
+                    {cList}
                 </Select>
             </FormControl>
          </Grid> 
-         <Grid item xs={12}>
+         <Grid item xs={12} className={classes.button}>  
             <FormControl className={classes.formControl}>
-                <Button variant="contained" color="primary" onClick={handleChange}>
+                <Button className={classes.button} variant="contained" color="primary" onClick={handleChange}>
                     Convert
                 </Button>
-            </FormControl>
-         </Grid>
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
+            </FormControl>      
+        </Grid>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
             {amount} {' ' + get(symbol, ['fromSymbol'])} = 
-            </Typography>
-            <Typography variant="h5" component="h2">
-                {amount * rate} {' ' + get(symbol, ['toSymbol'])}
-            </Typography>
-            {/* <Typography className={classes.pos} color="textSecondary">
-            adjective
-            </Typography>
-            <Typography variant="body2" component="p">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-            </Typography> */}
+        </Typography>
+        <Typography variant="h5" component="h2">
+            {amount * rate} {' ' + get(symbol, ['toSymbol'])}
+        </Typography>
        </>
     )
 }
