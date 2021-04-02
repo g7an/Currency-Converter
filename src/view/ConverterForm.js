@@ -6,13 +6,11 @@ import Select from '@material-ui/core/Select'
 import { TextField } from '@material-ui/core'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import IconButton from '@material-ui/core/IconButton'
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import axios from 'axios'
 import get from 'lodash/get'
+import Grid from '@material-ui/core/Grid'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
-  }));
+  }))
 
 
 const ConverterForm = () => {
@@ -46,109 +44,98 @@ const ConverterForm = () => {
 
     let currencyList = currencyCode.codes()
 
-    let [fromCode, setFromCode] = useState('')
-
-    let [toCode, setToCode] = useState('')
+    let [symbol, setSymbol] = useState(null)
 
     let [rate, setRate] = useState(0)
 
-    
-    
-    // useEffect(() => {
-    //     getUser()
-    // })
+    let [amount, setAmount] = useState(1)
 
 
     let cList = currencyList.length > 0
 		&& currencyList.map((item, i) => {
 		return (
-			<option key={i} value={item}>{item}</option>
+			<option key={i} value={item} >{item}</option>
 		)
-	}, this);
+	});
 
-    function handleFromChange(event) {
-        console.log(event.target.value)
-        setFromCode(event.target.value)
+    const handleSymbolChange = key => event => {
+        // console.log(event.target.value)
+        setSymbol(prevValues => ({
+            ...prevValues,
+            [key]: event.target.value
+        }))
+        handleChange()
+        // console.log(symbol.fromSymbol)
     }
 
-    function handleToChange(event) {
+    function handleInputChange(event) {
         console.log(event.target.value)
-        setToCode(event.target.value)
+        setAmount(event.target.value)
     }
 
     async function handleChange() {
-        try {
-            const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${fromCode}_${toCode}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
-            // console.log(get(response, ['data', `${fromCode}_${toCode}`]))
-            console.log(get(response, ['data', `${fromCode}_${toCode}`]))
-            setRate(get(response, ['data', `${fromCode}_${toCode}`]))
+        try {      
+            const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
+            console.log(response)
+            setRate(get(response, ['data', `${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`]))
           } catch (error) {
             console.error(error);
           }
     }
 
-    
-    // async function getUser() {
-    //     try {
-    //       const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${fromCode}_${toCode}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
-    //     //   console.log(response)
-    //       setRate(response)
-    //     } catch (error) {
-    //       console.error(error);
-    //     }
-    //   }
 
     return(
         <>
+         <Grid item xs={12}>
             <FormControl className={classes.formControl}>
-                <TextField id="standard-basic" defaultValue="1" label="Amount" />
+                <TextField id="standard-basic" name="amount" defaultValue="1" label="Amount" onChange={handleInputChange} />
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select" onChange={handleFromChange}>
+                <Select native defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
-                 {cList}
+                {cList}
                 </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
                 <label htmlFor="icon-button-file">
-                    <IconButton color="primary" aria-label="upload picture" component="span">
+                    <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
+                        handleSymbolChange("toSymbol") ({ target: {value: get(symbol, ['fromSymbol']) } })
+                        handleSymbolChange("fromSymbol") ({ target: {value: get(symbol, ['toSymbol']) } })
+                    }}>
                         <SwapHorizIcon />
                     </IconButton>
                 </label>
             </FormControl>
-            {/* <FormControl className={classes.formControl}>
-                <TextField id="standard-basic" defaultValue="1" label="Amount" />
-            </FormControl> */}
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">To</InputLabel>
-                <Select native defaultValue="" id="grouped-native-select" onChange={handleToChange}>
+                <Select native defaultValue="" id="grouped-native-select" value={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")}>
                 <option aria-label="None" value="" />
                 {cList}
                 </Select>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={handleChange}>
-                Convert
-            </Button>
-            <Card className={classes.root}>
-            <CardContent>
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                Currency of the Day
-                </Typography>
-                <Typography variant="h5" component="h2">
-                    {/* {get(getUser(), ['data', `${fromCode}_${toCode}`])} */}
-                    {rate}
-                </Typography>
-                {/* <Typography className={classes.pos} color="textSecondary">
-                adjective
-                </Typography>
-                <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-                </Typography> */}
-            </CardContent>
-            </Card>
+         </Grid> 
+         <Grid item xs={12}>
+            <FormControl className={classes.formControl}>
+                <Button variant="contained" color="primary" onClick={handleChange}>
+                    Convert
+                </Button>
+            </FormControl>
+         </Grid>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>
+            {amount} {' ' + get(symbol, ['fromSymbol'])} = 
+            </Typography>
+            <Typography variant="h5" component="h2">
+                {amount * rate} {' ' + get(symbol, ['toSymbol'])}
+            </Typography>
+            {/* <Typography className={classes.pos} color="textSecondary">
+            adjective
+            </Typography>
+            <Typography variant="body2" component="p">
+            well meaning and kindly.
+            <br />
+            {'"a benevolent smile"'}
+            </Typography> */}
        </>
     )
 }
