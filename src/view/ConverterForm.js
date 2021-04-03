@@ -47,30 +47,29 @@ const useStyles = makeStyles((theme) => ({
 const ConverterForm = () => {
     const classes = useStyles()
 
-    const currencyCode = require('currency-codes')
-
     let [symbol, setSymbol] = useState(null)
 
     let [rate, setRate] = useState(null)
 
     let [amount, setAmount] = useState(1)
 
+    let [swap, setSwap] = useState(false)
 
-    let cList = CURRENCY_SYMBOL.map((item, i) => {
-		return (
-			<option key={i} value={item.cc}>{item.cc} - {item.name}</option>
-		)
-	});
+    useEffect(() => {
+        
+    }, [swap])
 
-    const handleSymbolChange = key => event => {
-        // console.log(event.target.value)
-        setSymbol(prevValues => ({
-            ...prevValues,
-            [key]: event.target.value
-        }))
-        console.log(`${get(symbol, ['fromSymbol'])}`)
-        console.log(CURRENCY_SYMBOL.find(item => item.cc === 'USD').name)
-
+    const handleSymbolChange = (key) => event => {
+        console.log(event.target.value)
+        if (event.target.value) {
+            setSymbol(prevValues => ({
+                ...prevValues,
+                [key]: event.target.value.toUpperCase()
+            }))
+        }
+       
+        // console.log(`${get(symbol, ['fromSymbol'])}`)
+        // console.log(CURRENCY_SYMBOL.find(item => item.cc === 'USD').name
     }
 
     function handleInputChange(event) {
@@ -83,7 +82,6 @@ const ConverterForm = () => {
             const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
             console.log(response)
             setRate(get(response, ['data']))
-            console.log(rate)
           } catch (error) {
             console.error(error);
           }
@@ -97,32 +95,42 @@ const ConverterForm = () => {
                 <TextField className={classes.inputField} id="standard-basic" name="amount" defaultValue="1" label="Amount" onChange={handleInputChange} />
             </FormControl>
             <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native className={classes.optionField} defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
+                {/* <InputLabel htmlFor="grouped-native-select">From</InputLabel> */}
+
+                 <RenderAutoComplete label="From" values={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")} symbol={get(symbol, ['fromSymbol'])} isSwaped={swap} />
+                {/* <Select native className={classes.optionField} defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
                 {cList}
-                </Select>
+                </Select> */}
             </FormControl>
             <FormControl className={classes.formControl}>
                 <label htmlFor="icon-button-file">
                     <IconButton color="primary" aria-label="upload picture" component="span" onClick={() => {
-                        handleSymbolChange("toSymbol") ({ target: {value: get(symbol, ['fromSymbol']) } })
-                        handleSymbolChange("fromSymbol") ({ target: {value: get(symbol, ['toSymbol']) } })
+                        handleSymbolChange("toSymbol", get(symbol, ['fromSymbol'])) ({ target: {value: get(symbol, ['fromSymbol']) } })
+                        handleSymbolChange("fromSymbol", get(symbol, ['toSymbol'])) ({ target: {value: get(symbol, ['toSymbol']) } })
+                        setSwap(true)
                     }}>
                         <SwapHorizIcon />
                     </IconButton>
                 </label>
             </FormControl>
             <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="grouped-native-select">To</InputLabel>
+                {/* <RenderAutoComplete label="To" value={get(symbol, ['toSymbol'])} onChange={(event, value) => {
+                    if(value) {
+                        console.log(value.cc)
+                        setSymbol(prevValues => ({
+                            ...prevValues,
+                            toSymbol: value.cc? value.cc: event.target.value
+                        }))
+                    }   
+                }} /> */}
+               <RenderAutoComplete label="To" values={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")} symbol={get(symbol, ['toSymbol'])} isSwaped={swap} />
+                {/* <InputLabel htmlFor="grouped-native-select">To</InputLabel>
                 <Select native className={classes.optionField} defaultValue="" 
                         id="grouped-native-select" value={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")}>
                     <option aria-label="None" value="" />
                     {cList}
-                </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-                <RenderAutoComplete />
+                </Select> */}
             </FormControl>
          </Grid> 
          <Grid item xs={12} className={classes.button}>  
