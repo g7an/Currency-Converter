@@ -12,6 +12,7 @@ import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
 import { CURRENCY_SYMBOL } from '../constants/data'
+import RenderAutoComplete from './utils/RenderAutoComplete'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -119,6 +120,9 @@ const ConverterForm = () => {
                     <option aria-label="None" value="" />
                     {cList}
                 </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+                <RenderAutoComplete />
             </FormControl>
          </Grid> 
          <Grid item xs={12} className={classes.button}>  
