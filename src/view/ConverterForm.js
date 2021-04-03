@@ -11,7 +11,6 @@ import Typography from '@material-ui/core/Typography'
 import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
 import { CURRENCY_SYMBOL } from '../constants/data'
 
 
@@ -35,12 +34,6 @@ const useStyles = makeStyles((theme) => ({
         margin: '0 2px',
         transform: 'scale(0.8)',
     },
-    button: {
-        // marginLeft: 150,
-        // justifyContent: "flex-start",
-        // alignItems: "flex-start"
-        
-    },
     title: {
         fontSize: 14,
     },
@@ -52,17 +45,12 @@ const useStyles = makeStyles((theme) => ({
 
 const ConverterForm = () => {
     const classes = useStyles()
-    console.log(CURRENCY_SYMBOL.map(result => result.cc))
-
-    // const axios = require('axios')
 
     const currencyCode = require('currency-codes')
 
-    let currencyList = currencyCode.codes()
-
     let [symbol, setSymbol] = useState(null)
 
-    let [rate, setRate] = useState(0)
+    let [rate, setRate] = useState(null)
 
     let [amount, setAmount] = useState(1)
 
@@ -79,8 +67,9 @@ const ConverterForm = () => {
             ...prevValues,
             [key]: event.target.value
         }))
-        handleChange()
-        // console.log(symbol.fromSymbol)
+        console.log(`${get(symbol, ['fromSymbol'])}`)
+        console.log(CURRENCY_SYMBOL.find(item => item.cc === 'USD').name)
+
     }
 
     function handleInputChange(event) {
@@ -92,7 +81,8 @@ const ConverterForm = () => {
         try {      
             const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
             console.log(response)
-            setRate(get(response, ['data', `${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`]))
+            setRate(get(response, ['data']))
+            console.log(rate)
           } catch (error) {
             console.error(error);
           }
@@ -136,14 +126,18 @@ const ConverterForm = () => {
                 <Button className={classes.button} variant="contained" color="primary" onClick={handleChange}>
                     Convert
                 </Button>
-            </FormControl>      
+            </FormControl>       
         </Grid>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-            {amount} {' ' + get(symbol, ['fromSymbol'])} = 
-        </Typography>
-        <Typography variant="h5" component="h2">
-            {amount * rate} {' ' + get(symbol, ['toSymbol'])}
-        </Typography>
+        {symbol && rate && amount &&  
+        <Grid item xs={12} className={classes.button}>  
+            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
+            </Typography>
+            <Typography variant="h5" component="h2">
+                {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+            </Typography>
+        </Grid>
+}
        </>
     )
 }
