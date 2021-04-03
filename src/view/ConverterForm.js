@@ -12,6 +12,8 @@ import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
 import { CURRENCY_SYMBOL } from '../constants/data'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import NumberFormatter from '../services/NumberFormatter'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
 const ConverterForm = () => {
     const classes = useStyles()
 
-    const currencyCode = require('currency-codes')
-
     let [symbol, setSymbol] = useState(null)
 
     let [rate, setRate] = useState(null)
@@ -57,9 +57,18 @@ const ConverterForm = () => {
 
     let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
-			<option key={i} value={item.cc}>{item.cc} - {item.name}</option>
+			<option key={i} value={item.cc}>{countryToFlag(item.cc)} {item.cc} - {item.name}</option>
 		)
 	});
+
+    function countryToFlag(isoCode) {
+        return typeof String.fromCodePoint !== 'undefined'
+          ? isoCode
+              .substring(0, 2)
+              .toUpperCase()
+              .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+          : isoCode;
+      }
 
     const handleSymbolChange = key => event => {
         // console.log(event.target.value)
@@ -67,14 +76,12 @@ const ConverterForm = () => {
             ...prevValues,
             [key]: event.target.value
         }))
-        console.log(`${get(symbol, ['fromSymbol'])}`)
-        console.log(CURRENCY_SYMBOL.find(item => item.cc === 'USD').name)
 
     }
 
     function handleInputChange(event) {
         console.log(event.target.value)
-        setAmount(event.target.value)
+        setAmount(parseFloat(event.target.value))
     }
 
     async function handleChange() {
@@ -93,7 +100,13 @@ const ConverterForm = () => {
         <>
          <Grid item xs={12}>
             <FormControl className={classes.formControl}>
-                <TextField className={classes.inputField} id="standard-basic" name="amount" defaultValue="1" label="Amount" onChange={handleInputChange} />
+                <TextField className={classes.inputField} id="standard-basic" name="amount" 
+                    defaultValue="1.00" label="Amount" onChange={handleInputChange} 
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        inputComponent: NumberFormatter,
+                      }}
+                />
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
@@ -121,23 +134,23 @@ const ConverterForm = () => {
                 </Select>
             </FormControl>
          </Grid> 
-         <Grid item xs={12} className={classes.button}>  
-            <FormControl className={classes.formControl}>
-                <Button className={classes.button} variant="contained" color="primary" onClick={handleChange}>
-                    Convert
-                </Button>
-            </FormControl>       
-        </Grid>
-        {symbol && rate && amount &&  
-        <Grid item xs={12} className={classes.button}>  
-            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
-            </Typography>
-            <Typography variant="h5" component="h2">
-                {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
-            </Typography>
-        </Grid>
-}
+        {symbol && rate && amount ?    
+            <Grid item xs={12} className={classes.button}>  
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                    {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
+                </Typography>
+                <Typography variant="h5" component="h2">
+                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+                </Typography>
+            </Grid> :
+            <Grid item xs={12} className={classes.button}>  
+                <FormControl className={classes.formControl}>
+                    <Button className={classes.button} variant="contained" color="primary" onClick={handleChange}>
+                        Convert
+                    </Button>
+                </FormControl>       
+            </Grid> 
+    }
        </>
     )
 }
