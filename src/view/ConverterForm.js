@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -14,10 +15,13 @@ import Grid from '@material-ui/core/Grid'
 import { CURRENCY_SYMBOL } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
+import Card from '@material-ui/core/Card'
 
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
+      marginTop: 25,
+      marginBottom: 25,
       margin: theme.spacing(1),
       minWidth: 120,
     },
@@ -26,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         minWidth: 275,
+        marginTop: 20,
+        marginBottom: 20,
     },
     optionField: {
         width: 250,
@@ -107,7 +113,8 @@ const ConverterForm = () => {
 
     return(
         <>
-         <Grid item xs={12}>
+        <Card className={classes.root}>
+        <Grid item xs={12}>
             <FormControl className={classes.formControl}>
                 <TextField className={classes.inputField} id="standard-basic" name="amount" 
                     defaultValue="1.00" label="Amount" onChange={handleInputChange} 
@@ -144,7 +151,7 @@ const ConverterForm = () => {
             </FormControl>
          </Grid> 
         {symbol && rate && amount ?    
-            <Grid item xs={12} className={classes.button}>  
+            <Grid item xs={12} className={classes.formControl}>  
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
                 </Typography>
@@ -159,7 +166,9 @@ const ConverterForm = () => {
                     </Button>
                 </FormControl>       
             </Grid> 
-    }
+        }
+        </Card>
+
        </>
     )
 }
