@@ -54,6 +54,15 @@ const ConverterForm = () => {
 
     let [amount, setAmount] = useState(1)
 
+    let [startSymbol, setStartSymbol] = useState()
+
+    useEffect(() => {
+
+        if(get(symbol, ['fromSymbol'])) {
+            setStartSymbol(CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).symbol)
+        }
+
+    }, [symbol])
 
     let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
@@ -89,11 +98,11 @@ const ConverterForm = () => {
             const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
             console.log(response)
             setRate(get(response, ['data']))
-            console.log(rate)
           } catch (error) {
             console.error(error);
           }
     }
+    console.log(CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])))
 
 
     return(
@@ -103,7 +112,7 @@ const ConverterForm = () => {
                 <TextField className={classes.inputField} id="standard-basic" name="amount" 
                     defaultValue="1.00" label="Amount" onChange={handleInputChange} 
                     InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
                         inputComponent: NumberFormatter,
                       }}
                 />
@@ -140,7 +149,7 @@ const ConverterForm = () => {
                     {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
                 </Typography>
                 <Typography variant="h5" component="h2">
-                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`]).toFixed(2)} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
                 </Typography>
             </Grid> :
             <Grid item xs={12} className={classes.button}>  
