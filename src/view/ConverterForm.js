@@ -16,6 +16,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
 import Card from '@material-ui/core/Card'
 import Bars from './Bars'
+import Container from '@material-ui/core/Container'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +37,6 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
         height: '100vh',
         overflow: 'auto',
-      },
-    root2: {
-        minWidth: 275,
-        marginTop: 20,
-        marginBottom: 20,
     },
     optionField: {
         width: 250,
@@ -57,6 +53,22 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+      },
+    appBarSpacer: theme.mixins.toolbar,
+    button: {
+        justifyContent: 'center',
+        textAlign:'center'
+    },
+    form: {
+        justifyContent: 'center',
+        textAlign:'center'  
+    }
   }))
 
 
@@ -121,19 +133,20 @@ const ConverterForm = () => {
         <div className={classes.root}>
           <Bars />
         <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Card className={classes.root2}>
-        <Grid item xs={12}>
-            <FormControl className={classes.formControl}>
-                <TextField className={classes.inputField} id="standard-basic" name="amount" 
-                    defaultValue="1.00" label="Amount" onChange={handleInputChange} 
-                    InputProps={{
-                        startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
-                        inputComponent: NumberFormatter,
-                      }}
-                />
-            </FormControl>
-            <FormControl className={classes.formControl}>
+            <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Card>
+                    <Grid item xs={12} className={classes.form}>
+                        <FormControl className={classes.formControl}>
+                            <TextField className={classes.inputField} id="standard-basic" name="amount" 
+                                defaultValue="1.00" label="Amount" onChange={handleInputChange} 
+                                InputProps={{
+                                    startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
+                                    inputComponent: NumberFormatter,
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
                 <Select native className={classes.optionField} defaultValue="JPY" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
@@ -158,7 +171,7 @@ const ConverterForm = () => {
                     {cList}
                 </Select>
             </FormControl>
-         </Grid> 
+         
         {symbol && rate && amount ?    
             <Grid item xs={12} className={classes.formControl}>  
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
@@ -174,9 +187,12 @@ const ConverterForm = () => {
                         Convert
                     </Button>
                 </FormControl>       
-            </Grid> 
+            </Grid>
         }
+        </Grid> 
         </Card>
+                    
+        </Container>
         </main>
         </div>
         

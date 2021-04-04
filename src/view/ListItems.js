@@ -10,6 +10,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { useHistory } from 'react-router-dom';
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 
 const ListItems = () => {
     let history = useHistory()
@@ -19,17 +20,17 @@ const ListItems = () => {
         <div>
           <ListItem button onClick={() => history.push('/')} >
             <ListItemIcon>
-              <DashboardIcon />
+              <BarChartIcon />
             </ListItemIcon>
             <ListItemText primary="DashBoard" />
           </ListItem>
           <ListItem button onClick={() => history.push('/converter')}>
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <SwapHorizIcon />
             </ListItemIcon>
             <ListItemText primary="Converter" />
           </ListItem>
-          <ListItem button>
+          {/* <ListItem button>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
@@ -46,7 +47,7 @@ const ListItems = () => {
               <LayersIcon />
             </ListItemIcon>
             <ListItemText primary="Integrations" />
-          </ListItem>
+          </ListItem> */}
         </div>
       )      
 } 
