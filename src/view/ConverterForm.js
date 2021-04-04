@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import FormControl from '@material-ui/core/FormControl'
 import { makeStyles } from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -16,6 +15,7 @@ import { CURRENCY_SYMBOL } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
 import Card from '@material-ui/core/Card'
+import Bars from './Bars'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,9 +26,18 @@ const useStyles = makeStyles((theme) => ({
       minWidth: 120,
     },
     inputField: {
-        width: 100,
+        width: 120,
     },
     root: {
+        display: 'flex',
+      },
+      appBarSpacer: theme.mixins.toolbar,
+      content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+      },
+    root2: {
         minWidth: 275,
         marginTop: 20,
         marginBottom: 20,
@@ -54,13 +63,13 @@ const useStyles = makeStyles((theme) => ({
 const ConverterForm = () => {
     const classes = useStyles()
 
-    let [symbol, setSymbol] = useState({fromSymbol: "JPY", toSymbol: "USD"})
+    let [symbol, setSymbol] = useState({fromSymbol: "CAD", toSymbol: "USD"})
 
     let [rate, setRate] = useState(null)
 
     let [amount, setAmount] = useState(1)
 
-    let [startSymbol, setStartSymbol] = useState("\u00a5")
+    let [startSymbol, setStartSymbol] = useState("$")
 
     useEffect(() => {
 
@@ -109,7 +118,11 @@ const ConverterForm = () => {
 
     return(
         <>
-        <Card className={classes.root}>
+        <div className={classes.root}>
+          <Bars />
+        <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Card className={classes.root2}>
         <Grid item xs={12}>
             <FormControl className={classes.formControl}>
                 <TextField className={classes.inputField} id="standard-basic" name="amount" 
@@ -164,6 +177,9 @@ const ConverterForm = () => {
             </Grid> 
         }
         </Card>
+        </main>
+        </div>
+        
 
        </>
     )
