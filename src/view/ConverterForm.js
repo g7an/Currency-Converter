@@ -54,13 +54,13 @@ const useStyles = makeStyles((theme) => ({
 const ConverterForm = () => {
     const classes = useStyles()
 
-    let [symbol, setSymbol] = useState(null)
+    let [symbol, setSymbol] = useState({fromSymbol: "JPY", toSymbol: "USD"})
 
     let [rate, setRate] = useState(null)
 
     let [amount, setAmount] = useState(1)
 
-    let [startSymbol, setStartSymbol] = useState()
+    let [startSymbol, setStartSymbol] = useState("\u00a5")
 
     useEffect(() => {
 
@@ -74,7 +74,7 @@ const ConverterForm = () => {
 		return (
 			<option key={i} value={item.cc}>{countryToFlag(item.cc)} {item.cc} - {item.name}</option>
 		)
-	});
+	})
 
     function countryToFlag(isoCode) {
         return typeof String.fromCodePoint !== 'undefined'
@@ -82,11 +82,10 @@ const ConverterForm = () => {
               .substring(0, 2)
               .toUpperCase()
               .replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-          : isoCode;
+          : isoCode
       }
 
     const handleSymbolChange = key => event => {
-        // console.log(event.target.value)
         setSymbol(prevValues => ({
             ...prevValues,
             [key]: event.target.value
@@ -95,7 +94,6 @@ const ConverterForm = () => {
     }
 
     function handleInputChange(event) {
-        console.log(event.target.value)
         setAmount(parseFloat(event.target.value))
     }
 
@@ -105,11 +103,9 @@ const ConverterForm = () => {
             console.log(response)
             setRate(get(response, ['data']))
           } catch (error) {
-            console.error(error);
+            console.error(error)
           }
     }
-    console.log(CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])))
-
 
     return(
         <>
@@ -126,7 +122,7 @@ const ConverterForm = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native className={classes.optionField} defaultValue="" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
+                <Select native className={classes.optionField} defaultValue="JPY" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
                 {cList}
                 </Select>
@@ -143,7 +139,7 @@ const ConverterForm = () => {
             </FormControl>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">To</InputLabel>
-                <Select native className={classes.optionField} defaultValue="" 
+                <Select native className={classes.optionField} defaultValue="USD" 
                         id="grouped-native-select" value={get(symbol, ['toSymbol'])} onChange={handleSymbolChange("toSymbol")}>
                     <option aria-label="None" value="" />
                     {cList}
