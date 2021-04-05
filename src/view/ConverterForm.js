@@ -17,11 +17,16 @@ import NumberFormatter from '../services/NumberFormatter'
 import Card from '@material-ui/core/Card'
 import Bars from './Bars'
 import Container from '@material-ui/core/Container'
+import Paper from '@material-ui/core/Paper'
+import clsx from 'clsx'
 
 
 const useStyles = makeStyles((theme) => ({
+    fixedHeight: {
+        height: 300,
+    },
     formControl: {
-      marginTop: 25,
+      marginTop: 50,
       marginBottom: 25,
       margin: theme.spacing(1),
       minWidth: 120,
@@ -68,7 +73,18 @@ const useStyles = makeStyles((theme) => ({
     form: {
         justifyContent: 'center',
         textAlign:'center'  
-    }
+    },
+    paper: {
+        marginTop: theme.spacing(1),
+        padding: theme.spacing(2),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+    },
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
+      },
   }))
 
 
@@ -128,6 +144,8 @@ const ConverterForm = () => {
           }
     }
 
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
     return(
         <>
         <div className={classes.root}>
@@ -135,16 +153,16 @@ const ConverterForm = () => {
         <main className={classes.content}>
             <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
-                    <Card>
-                    <Grid item xs={12} className={classes.form}>
-                        <FormControl className={classes.formControl}>
-                            <TextField className={classes.inputField} id="standard-basic" name="amount" 
-                                defaultValue="1.00" label="Amount" onChange={handleInputChange} 
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
-                                    inputComponent: NumberFormatter,
-                                }}
-                            />
+                    <Paper className={fixedHeightPaper}>
+                        <Grid container xs={12} className={classes.form}>
+                            <FormControl className={classes.formControl}>
+                                <TextField className={classes.inputField} id="standard-basic" name="amount" 
+                                    defaultValue="1.00" label="Amount" onChange={handleInputChange} 
+                                    InputProps={{
+                                        startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
+                                        inputComponent: NumberFormatter,
+                                    }}
+                                />
                         </FormControl>
                         <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
@@ -190,8 +208,7 @@ const ConverterForm = () => {
             </Grid>
         }
         </Grid> 
-        </Card>
-                    
+        </Paper>       
         </Container>
         </main>
         </div>

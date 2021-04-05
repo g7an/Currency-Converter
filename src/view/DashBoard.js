@@ -24,15 +24,20 @@ import Deposits from './Deposits';
 import Orders from './Orders';
 import Bars  from './Bars';
 
-function Copyright() {
+function Declaration() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
+        {'Made by '}
         <Link color="inherit" href="https://material-ui.com/">
-          Your Website
-        </Link>{' '}
+          Gloria Tan
+        </Link>
+        {' using '}
+        <Link color="inherit" href="https://reactjs.org/">
+          React
+        </Link>
+        {' with ❤️ ('}
         {new Date().getFullYear()}
-        {'.'}
+        {')'}
       </Typography>
     );
   }
@@ -114,7 +119,7 @@ function Copyright() {
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 240,
+      height: 280,
     },
   }));
 
@@ -132,26 +137,20 @@ const DashBoard = () => {
                 <Container maxWidth="lg" className={classes.container}>
                   <Grid container spacing={3}>
                       {/* Chart */}
-                      <Grid item xs={12} md={8} lg={9}>
+                      <Grid item xs={12}>
                       <Paper className={fixedHeightPaper}>
-                          {/* <Chart /> */}
-                      </Paper>
-                      </Grid>
-                      {/* Recent Deposits */}
-                      <Grid item xs={12} md={4} lg={3}>
-                      <Paper className={fixedHeightPaper}>
-                          {/* <Deposits /> */}
+                          <Chart />
                       </Paper>
                       </Grid>
                       {/* Recent Orders */}
                       <Grid item xs={12}>
                       <Paper className={classes.paper}>
-                          {/* <Orders /> */}
+                          <Orders />
                       </Paper>
                       </Grid>
                   </Grid>
                 <Box pt={4}>
-                    <Copyright />
+                    <Declaration />
                 </Box>
                 </Container>
             </main>
