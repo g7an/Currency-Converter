@@ -119,7 +119,7 @@ function Declaration() {
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 280,
+      height: 400,
     },
   }));
 
