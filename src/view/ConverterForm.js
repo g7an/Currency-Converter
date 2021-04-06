@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
         height: 300,
     },
     formControl: {
-      marginTop: 50,
-      marginBottom: 25,
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(3),
       margin: theme.spacing(1),
       minWidth: 120,
     },
@@ -100,7 +100,6 @@ const ConverterForm = () => {
     let [startSymbol, setStartSymbol] = useState("$")
 
     useEffect(() => {
-
         if(get(symbol, ['fromSymbol'])) {
             setStartSymbol(CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).symbol)
         }
@@ -164,9 +163,9 @@ const ConverterForm = () => {
                                     }}
                                 />
                         </FormControl>
-                        <FormControl className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
-                <Select native className={classes.optionField} defaultValue="JPY" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
+                <Select native className={classes.optionField} defaultValue="CAD" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
                 {cList}
                 </Select>
@@ -200,7 +199,7 @@ const ConverterForm = () => {
                 </Typography>
             </Grid> :
             <Grid item xs={12} className={classes.button}>  
-                <FormControl className={classes.formControl}>
+                <FormControl >
                     <Button className={classes.button} variant="contained" color="primary" onClick={handleChange}>
                         Convert
                     </Button>
