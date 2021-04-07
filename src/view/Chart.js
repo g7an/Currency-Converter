@@ -93,7 +93,7 @@ export default function Chart() {
   
   async function handleChange() {
     try {      
-      //  TODO: 1. change dates, 2. do not call api again if swap
+      //  TODO: do not call api again if swap
         const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, 
         ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, 
         ['fromSymbol'])}&compact=ultra&date=${getCurrentDate(7)}&endDate=${getCurrentDate(0)}&apiKey=eaf0690418fe15dd0f48`)
@@ -106,7 +106,6 @@ export default function Chart() {
   }
   console.log(symbol)
   console.log(data)
-  console.log(getCurrentDate(7))
 
   return (
     <React.Fragment>

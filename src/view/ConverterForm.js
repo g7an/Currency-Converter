@@ -19,6 +19,7 @@ import Bars from './Bars'
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import clsx from 'clsx'
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom/cjs/react-dom.development'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -99,12 +100,23 @@ const ConverterForm = () => {
 
     let [startSymbol, setStartSymbol] = useState("$")
 
+    let [converted, setConverted] = useState(false)
+
     useEffect(() => {
         if(get(symbol, ['fromSymbol'])) {
             setStartSymbol(CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).symbol)
         }
 
+        if (converted) {
+            handleChange()
+        }
+
     }, [symbol])
+
+    // useEffect(() => {
+    //     if(converted)
+
+    // }, [converted, symbol])
 
     let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
@@ -134,6 +146,7 @@ const ConverterForm = () => {
     }
 
     async function handleChange() {
+        setConverted(true)
         try {      
             const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
             console.log(response)
@@ -195,7 +208,7 @@ const ConverterForm = () => {
                     {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
                 </Typography>
                 <Typography variant="h5" component="h2">
-                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`]).toFixed(2)} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
                 </Typography>
             </Grid> :
             <Grid item xs={12} className={classes.button}>  

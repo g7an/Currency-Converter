@@ -14,7 +14,7 @@ import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 
 const ListItems = () => {
     let history = useHistory()
-    console.log(history)
+    // console.log(history)
 
     return (
         <div>
