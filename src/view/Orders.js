@@ -7,6 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
+import get from 'lodash/get'
+import axios from 'axios'
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -31,16 +33,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+async function handleChange() {
+  try {      
+    //  TODO: do not call api again if swap
+      const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY,GBP_USD,AUD_USD,USD_CAD,USD_CNY&compact=ultra&apiKey=eaf0690418fe15dd0f48`)
+    } catch (error) {
+      console.error(error)
+    }
+}
+
+// EUR_USD (euro/US dollar)
+// USD_JPY (US dollar/Japanese yen)
+// GBP_USD (British pound/US dollar)
+// AUD_USD (Australian dollar/US dollar)
+// USD_CAD (US dollar/Canadian dollar)
+// USD_CNY (US dollar/Chinese renminbi)
 export default function Orders() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Currency Today</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
+            <TableCell>Currency</TableCell>
+            <TableCell>Rate</TableCell>
             <TableCell>Ship To</TableCell>
             <TableCell>Payment Method</TableCell>
             <TableCell align="right">Sale Amount</TableCell>
