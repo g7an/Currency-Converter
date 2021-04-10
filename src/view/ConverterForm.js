@@ -19,7 +19,6 @@ import Bars from './Bars'
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import clsx from 'clsx'
-import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom/cjs/react-dom.development'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -160,12 +159,6 @@ const ConverterForm = () => {
 
     return(
         <>
-        <div className={classes.root}>
-          <Bars />
-        <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Paper className={fixedHeightPaper}>
                         <Grid container xs={12} className={classes.form}>
                             <FormControl className={classes.formControl}>
                                 <TextField className={classes.inputField} id="standard-basic" name="amount" 
@@ -220,12 +213,6 @@ const ConverterForm = () => {
             </Grid>
         }
         </Grid> 
-        </Paper>       
-        </Container>
-        </main>
-        </div>
-        
-
        </>
     )
 }
