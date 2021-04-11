@@ -15,8 +15,8 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { red, green } from '@material-ui/core/colors';
 
 // Generate Order Data
-function createData(cPair, rate, change) {
-  return { cPair, rate, change };
+function createData(index, cPair, rate, change) {
+  return { index, cPair, rate, change };
 }
 
 const rows = [
@@ -54,12 +54,23 @@ export default function Orders() {
     if(!data) {
       handleData()
     }
-    processData()
+    if(!table) {
+      processData()
+    }
+    
   }, [data])
 
   useEffect(() => {
-    setTable(rowsTemp)
-  }, [rowsTemp])
+    console.log(data)
+    console.log(table)
+    if(!table || table.length == 0) {
+      processData()
+    }
+  }, [table])
+
+  // useEffect(() => {
+  //   setTable(rowsTemp)
+  // })
 
   const compareRate = (rate1, rate2) => {
     return rate1 >= rate2 ? rate1 === rate2? '-': <ArrowDropDownIcon style={{ color: red[500] }}/>: <ArrowDropUpIcon style={{ color: green[500] }}/>
@@ -119,12 +130,13 @@ export default function Orders() {
   }
 
   const processData = () => {
-    // console.log(data)
-    for (const cPair in data) {
-      // console.log(`${cPair}: ${get(data[cPair], ['2021-04-09'])}`)
+    let count = 1
+    for (let cPair in data) {
+      console.log(`${cPair}: ${get(data[cPair], ['2021-04-09'])}`)
       let changeSign = compareRate(get(data[cPair], ['2021-04-08']), get(data[cPair], ['2021-04-09']))
-      rowsTemp.push(createData(cPair, get(data[cPair], ['2021-04-09']), changeSign))
+      rowsTemp.push(createData(count, cPair, get(data[cPair], ['2021-04-09']), changeSign))
       // rowsTemp.push(createData('USD_CNY', '7.123', 'low'))
+      count++
     }
     setTable(rowsTemp)
     // for (const time in input) {
@@ -133,7 +145,6 @@ export default function Orders() {
     // }
   }
   
-  console.log(table && table.length>0 &&table)
   return (
     <React.Fragment>
       <Title>Live Currency</Title>
@@ -146,8 +157,10 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
+          {/* {rowsTemp && rowsTemp.length > 0 && rowsTemp.map((row) => ( */}
           {table && table.length > 0 && table.map((row) => (
-            <TableRow>
+            // {rows.map((row) => (
+            <TableRow key={row.id}>
               <TableCell>{row.cPair}</TableCell>
               <TableCell>{row.rate}</TableCell>
               <TableCell>{row.change}</TableCell>
