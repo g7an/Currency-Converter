@@ -21,7 +21,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItems  from './ListItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Orders from './Orders';
+import Intro from './Intro';
 import Bars  from './Bars';
 
 function Declaration() {
@@ -141,6 +141,11 @@ const DashBoard = () => {
                       <Paper className={fixedHeightPaper}>
                           <Chart />
                       </Paper>
+                      </Grid>
+                      <Grid item xs={12}>
+                      {/* <Paper className={classes.paper}> */}
+                          <Intro />
+                      {/* </Paper> */}
                       </Grid>
                   </Grid>
                 <Box pt={4}>
