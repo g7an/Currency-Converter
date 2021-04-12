@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     height: '50vh',
   },
   image: {
-    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundImage: 'url(https://source.unsplash.com/weekly?chart)',
     backgroundRepeat: 'no-repeat',
     backgroundColor:
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
@@ -58,14 +58,18 @@ export default function Intro() {
   const classes = useStyles();
 
   return (
-    <Grid component="main" className={classes.root}>
+    <Grid container component="main" className={classes.root}>
       <CssBaseline />
     
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Title>Here is the Intro! </Title>
-    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
+      <Grid item xs={false} sm={4} md={6} className={classes.image} />
+      {/* <Title>Here is the Intro! </Title> */}
+    <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square >
+    <Typography>
+    Gloria's Currency Charts
+With this convenient tool you can review market history and analyse rate trends for any currency pair. All charts are interactive, use mid-market rates, and are available for up to a 10-year time period. To see a currency chart, select your two currencies, choose a time frame, and click to view.
+    </Typography>
     </Grid>
-   
+    
     </Grid>
   );
 }

@@ -51,13 +51,14 @@ export default function Orders() {
 
   useEffect(() => {
     console.log(data)
-    console.log(table)
+    // console.log(table)
     if(!table || table.length == 0) {
       processData()
     }
   }, [data])
 
   const compareRate = (rate1, rate2) => {
+    console.log(rate1, rate2)
     return rate1 >= rate2 ? rate1 === rate2? '-': 
         <ArrowDropDownIcon style={{ color: red[500] }}/>: 
         <ArrowDropUpIcon style={{ color: green[500] }}/>
@@ -67,9 +68,10 @@ export default function Orders() {
   async function handleData() {
     try {      
       //  due to the pair limitation of free api (only 2 pairs can be called each time), api will be called 3 times
-        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_EUR,USD_JPY&compact=ultra&date=${getCurrentDate(1)}&endDate=${getCurrentDate(0)}&apiKey=eaf0690418fe15dd0f48`)
-        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(1)}&endDate=${getCurrentDate(0)}&apiKey=eaf0690418fe15dd0f48`)
-        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(1)}&endDate=${getCurrentDate(0)}&apiKey=eaf0690418fe15dd0f48`)
+      console.log(getCurrentDate(1), getCurrentDate(0))
+        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
+        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
+        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
       // const res1 = {
       //     "USD_EUR": {
       //         "2021-04-08": 0.839102,
@@ -104,7 +106,7 @@ export default function Orders() {
       // console.log(compareRate(get(res1, ['USD_EUR', '2021-04-08']), get(res2, ['USD_EUR', '2021-04-09'])))
       setData(prevValues => ({
         ...prevValues,
-        'USD / EUR': get(res1, ['data', 'USD_EUR']),
+        'EUR / USD': get(res1, ['data', 'EUR_USD']),
         'USD / JPY': get(res1, ['data', 'USD_JPY']),
         'GBP / USD': get(res2, ['data', 'GBP_USD']),
         'AUD / USD': get(res2, ['data', 'AUD_USD']),
@@ -119,9 +121,12 @@ export default function Orders() {
   const processData = () => {
     let count = 1
     for (let cPair in data) {
-      console.log(data, getCurrentDate(1), getCurrentDate(0))
+      // console.log(data, getCurrentDate(1), getCurrentDate(0))
       // console.log(`${cPair}: ${get(data[cPair], [getCurrentDate(2)])}, ${get(data[cPair], [getCurrentDate(0)])}`)
-      let changeSign = compareRate(get(data[cPair], [getCurrentDate(1)]), get(data[cPair], [getCurrentDate(0)]))
+      console.log('compare rate pass in: ')
+      console.log(get(data[cPair], [getCurrentDate(2)]))
+      console.log(get(data[cPair], [getCurrentDate(1)]))
+      let changeSign = compareRate(get(data[cPair], [getCurrentDate(2)]), get(data[cPair], [getCurrentDate(1)]))
       rows.push(createData(count, cPair, get(data[cPair], [getCurrentDate(0)]), changeSign))
       // rows.push(createData('USD_CNY', '7.123', 'low'))
       count++
