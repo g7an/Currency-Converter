@@ -52,6 +52,14 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  title: {
+    margin: theme.spacing(5, 10, 5, 10),
+  },
+  para: {
+    margin: theme.spacing(5, 10, 5, 10),
+    fontSize: 18,
+    lineHeight: 2
+  }
 }));
 
 export default function Intro() {
@@ -64,9 +72,13 @@ export default function Intro() {
       <Grid item xs={false} sm={4} md={6} className={classes.image} />
       {/* <Title>Here is the Intro! </Title> */}
     <Grid item xs={12} sm={8} md={6} component={Paper} elevation={6} square >
-    <Typography>
-    Gloria's Currency Charts
-With this convenient tool you can review market history and analyse rate trends for any currency pair. All charts are interactive, use mid-market rates, and are available for up to a 10-year time period. To see a currency chart, select your two currencies, choose a time frame, and click to view.
+    <Typography className={classes.title} color="primary" variant="h5" component="h2">
+      Gloria's Currency Chart
+    </Typography>
+    <Typography className={classes.para} variant="body1" gutterBottom>
+    With this convenient tool you can review market history and analyse rate trends for many currency pairs. 
+    All charts are interactive, and are available for up to a 7-day time period. 
+    To see a currency chart, select your two currencies, choose an amount, and click to view.
     </Typography>
     </Grid>
     

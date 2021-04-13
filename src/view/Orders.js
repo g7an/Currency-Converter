@@ -127,7 +127,7 @@ export default function Orders() {
       console.log(get(data[cPair], [getCurrentDate(2)]))
       console.log(get(data[cPair], [getCurrentDate(1)]))
       let changeSign = compareRate(get(data[cPair], [getCurrentDate(2)]), get(data[cPair], [getCurrentDate(1)]))
-      rows.push(createData(count, cPair, get(data[cPair], [getCurrentDate(0)]), changeSign))
+      rows.push(createData(count, cPair, get(data[cPair], [getCurrentDate(1)]), changeSign))
       // rows.push(createData('USD_CNY', '7.123', 'low'))
       count++
     }
