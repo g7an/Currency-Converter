@@ -7,6 +7,8 @@ import get from 'lodash/get'
 import SelectFields from './SelectFields'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
+import { getCurrentDate } from '../services/helper'
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -28,39 +30,8 @@ function reformat(dateStr) {
   return dArr[1]+ "/" +dArr[2];
 }
 
-// TODO: 1. mock api
-// const response = 
-// {
-//   "USD_CAD": {
-//       "2021-03-31": 1.25652,
-//       "2021-04-01": 1.254765,
-//       "2021-04-02": 1.257735,
-//       "2021-04-03": 1.257735,
-//       "2021-04-04": 1.25666,
-//       "2021-04-05": 1.25185
-//   },
-//   "CAD_USD": {
-//       "2021-03-31": 0.795849,
-//       "2021-04-01": 0.796962,
-//       "2021-04-02": 0.79508,
-//       "2021-04-03": 0.79508,
-//       "2021-04-04": 0.79576,
-//       "2021-04-05": 0.798818
-//   },
-//   "CHF_CNY": {
-//     "2021-03-31": 6.941092,
-//     "2021-04-01": 6.968339,
-//     "2021-04-02": 6.966924,
-//     "2021-04-03": 6.966924,
-//     "2021-04-04": 6.96991,
-//     "2021-04-05": 7.015389
-// },
-// }
 
-
-
-let dataTemp = [
-];
+let dataTemp = [];
 
 export default function Chart() {
   const theme = useTheme();
@@ -76,15 +47,6 @@ export default function Chart() {
     }
     setData(dataTemp)
     dataTemp = []
-  }
-
-  const getCurrentDate = (offset) => {
-    let newDate = new Date()
-    let date = newDate.getDate() - offset;
-    let month = newDate.getMonth() + 1;
-    let year = newDate.getFullYear();
-    
-    return `${year}-${month<10?`0${month}`:`${month}`}-${date<10?`0${date}`:`${date}`}`
   }
 
   useEffect(() => {
@@ -109,25 +71,31 @@ export default function Chart() {
 
   return (
     <React.Fragment>
+      <Title>Currency trend in last 7 days</Title>
       <Grid className={classes.form}>
         <SelectFields symbol={symbol} onSymbolChange={setSymbol}/>       
       </Grid>
-      {data && <ResponsiveContainer>       
-         <LineChart
-         data={data}
-         margin={{
-           top: 16,
-           right: 16,
-           bottom: 0,
-           left: 24,
-         }}
-       >
-         <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
-         <YAxis stroke={theme.palette.text.secondary} domain={['dataMin', 'dataMax']}>
-         </YAxis>
-         <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} />
-       </LineChart>
-      </ResponsiveContainer>     
+      {data ? 
+        <ResponsiveContainer>       
+          <LineChart
+          data={data}
+          margin={{
+            top: 16,
+            right: 16,
+            bottom: 0,
+            left: 24,
+          }}
+        >
+          <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
+          <YAxis stroke={theme.palette.text.secondary} domain={['dataMin', 'dataMax']}>
+          </YAxis>
+          <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} />
+        </LineChart>
+        </ResponsiveContainer> :
+        <Grid className={classes.form}>
+            <CircularProgress />
+        </Grid>
+        
       }
       
     </React.Fragment>

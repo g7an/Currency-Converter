@@ -11,15 +11,11 @@ import Typography from '@material-ui/core/Typography'
 import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
-import { CURRENCY_SYMBOL } from '../constants/data'
+import { CURRENCY_SYMBOL, CURRENCY_LIST } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
-import Card from '@material-ui/core/Card'
-import Bars from './Bars'
-import Container from '@material-ui/core/Container'
-import Paper from '@material-ui/core/Paper'
 import clsx from 'clsx'
-import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom/cjs/react-dom.development'
+import { CircularProgress } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -113,10 +109,6 @@ const ConverterForm = () => {
 
     }, [symbol])
 
-    // useEffect(() => {
-    //     if(converted)
-
-    // }, [converted, symbol])
 
     let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
@@ -151,32 +143,25 @@ const ConverterForm = () => {
             const response = await axios.get(`https://free.currconv.com/api/v7/convert?q=${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])},${get(symbol, ['toSymbol'])}_${get(symbol, ['fromSymbol'])}&compact=ultra&apiKey=${process.env.REACT_APP_API_KEY}`)
             console.log(response)
             setRate(get(response, ['data']))
+            
           } catch (error) {
             console.error(error)
           }
     }
 
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
     return(
         <>
-        <div className={classes.root}>
-          <Bars />
-        <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Paper className={fixedHeightPaper}>
-                        <Grid container xs={12} className={classes.form}>
-                            <FormControl className={classes.formControl}>
-                                <TextField className={classes.inputField} id="standard-basic" name="amount" 
-                                    defaultValue="1.00" label="Amount" onChange={handleInputChange} 
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
-                                        inputComponent: NumberFormatter,
-                                    }}
-                                />
-                        </FormControl>
+            <Grid container xs={12} className={classes.form}>
                 <FormControl className={classes.formControl}>
+                    <TextField className={classes.inputField} id="standard-basic" name="amount" 
+                        defaultValue="1.00" label="Amount" onChange={handleInputChange} 
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">{startSymbol}</InputAdornment>,
+                            inputComponent: NumberFormatter,
+                        }}
+                    />
+            </FormControl>
+            <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="grouped-native-select">From</InputLabel>
                 <Select native className={classes.optionField} defaultValue="CAD" id="grouped-native-select" value={get(symbol, ['fromSymbol'])} onChange={handleSymbolChange("fromSymbol")}>
                 <option aria-label="None" value="" /> 
@@ -202,14 +187,17 @@ const ConverterForm = () => {
                 </Select>
             </FormControl>
          
-        {symbol && rate && amount ?    
+        {symbol && amount && converted ?    
             <Grid item xs={12} className={classes.formControl}>  
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
                 </Typography>
+                {rate? 
                 <Typography variant="h5" component="h2">
-                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
-                </Typography>
+                {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+                </Typography> :
+                <CircularProgress />
+            }
             </Grid> :
             <Grid item xs={12} className={classes.button}>  
                 <FormControl >
@@ -220,12 +208,6 @@ const ConverterForm = () => {
             </Grid>
         }
         </Grid> 
-        </Paper>       
-        </Container>
-        </main>
-        </div>
-        
-
        </>
     )
 }

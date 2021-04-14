@@ -19,9 +19,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItems  from './ListItems';
-import Chart from './Chart';
+import ConverterForm from './ConverterForm';
 import Deposits from './Deposits';
-import Intro from './Intro';
+import Orders from './Orders';
 import Bars  from './Bars';
 
 function Declaration() {
@@ -119,7 +119,7 @@ function Declaration() {
       flexDirection: 'column',
     },
     fixedHeight: {
-      height: 400,
+      height: 300,
     },
   }));
 
@@ -139,13 +139,14 @@ const DashBoard = () => {
                       {/* Chart */}
                       <Grid item xs={12}>
                       <Paper className={fixedHeightPaper}>
-                          <Chart />
+                          <ConverterForm />
                       </Paper>
                       </Grid>
+                      {/* Recent Orders */}
                       <Grid item xs={12}>
-                      {/* <Paper className={classes.paper}> */}
-                          <Intro />
-                      {/* </Paper> */}
+                      <Paper className={classes.paper}>
+                          <Orders />
+                      </Paper>
                       </Grid>
                   </Grid>
                 <Box pt={4}>

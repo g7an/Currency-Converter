@@ -5,7 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom"
-import ConverterForm from "./view/ConverterForm"
+import ConverterBoard from "./view/ConverterBoard"
 import Bars from './view/Bars'
 
 import Typography from '@material-ui/core/Typography'
@@ -21,7 +21,7 @@ export default function Routes() {
           <Route path="/" component={DashBoard} exact />
             {/* <Dashboard /> */}
           {/* </Route> */}
-          <Route path="/converter" component={ConverterForm} />
+          <Route path="/converter" component={ConverterBoard} />
             {/* <ConverterForm />
           </Route> */}
         </Switch>
