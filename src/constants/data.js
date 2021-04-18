@@ -38,7 +38,6 @@ export const CURRENCY_SYMBOL =
   {"cc":"DKK","symbol":"Kr","name":"Danish krone"},
   {"cc":"DOP","symbol":"RD$","name":"Dominican peso"},
   {"cc":"DZD","symbol":"\u062f.\u062c","name":"Algerian dinar"},
-  {"cc":"EEK","symbol":"KR","name":"Estonian kroon"},
   {"cc":"EGP","symbol":"\u00a3","name":"Egyptian pound"},
   {"cc":"ERN","symbol":"Nfa","name":"Eritrean nakfa"},
   {"cc":"ETB","symbol":"Br","name":"Ethiopian birr"},
@@ -51,7 +50,6 @@ export const CURRENCY_SYMBOL =
   {"cc":"GIP","symbol":"\u00a3","name":"Gibraltar pound"},
   {"cc":"GMD","symbol":"D","name":"Gambian dalasi"},
   {"cc":"GNF","symbol":"FG","name":"Guinean franc"},
-  {"cc":"GQE","symbol":"CFA","name":"Central African CFA franc"},
   {"cc":"GTQ","symbol":"Q","name":"Guatemalan quetzal"},
   {"cc":"GYD","symbol":"GY$","name":"Guyanese dollar"},
   {"cc":"HKD","symbol":"HK$","name":"Hong Kong dollar"},
@@ -141,12 +139,9 @@ export const CURRENCY_SYMBOL =
   {"cc":"USD","symbol":"US$","name":"United States dollar"},
   {"cc":"UYU","symbol":"$U","name":"Uruguayan peso"},
   {"cc":"UZS","symbol":"UZS","name":"Uzbekistani som"},
-  {"cc":"VEB","symbol":"Bs","name":"Venezuelan bolivar"},
   {"cc":"VND","symbol":"\u20ab","name":"Vietnamese dong"},
   {"cc":"VUV","symbol":"VT","name":"Vanuatu vatu"},
   {"cc":"WST","symbol":"WS$","name":"Samoan tala"},
   {"cc":"YER","symbol":"YER","name":"Yemeni rial"},
-  {"cc":"ZAR","symbol":"R","name":"South African rand"},
   {"cc":"ZMK","symbol":"ZK","name":"Zambian kwacha"},
-  {"cc":"ZWR","symbol":"Z$","name":"Zimbabwean dollar"}
 ]

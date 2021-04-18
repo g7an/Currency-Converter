@@ -142,8 +142,6 @@ const DashBoard = () => {
                 </Container>
             </main>
           </div>
-        {/* <Bars />   */}
-       
       </>
     );
     

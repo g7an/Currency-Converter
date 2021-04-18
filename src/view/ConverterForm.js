@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid'
 import { CURRENCY_SYMBOL, CURRENCY_LIST } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
-import { CircularProgress } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -111,7 +110,7 @@ const ConverterForm = () => {
 
     let cList = CURRENCY_SYMBOL.map((item, i) => {
 		return (
-			<option key={i} value={item.cc}>{countryToFlag(item.cc)} {item.cc} - {item.name}</option>
+			<option key={i} value={item.cc}>{item.cc} - {item.name} {countryToFlag(item.cc)}</option>
 		)
 	})
 
@@ -186,17 +185,14 @@ const ConverterForm = () => {
                 </Select>
             </FormControl>
          
-        {symbol && amount && converted ?    
+        {symbol && amount && converted  ?    
             <Grid item xs={12} className={classes.formControl}>  
                 <Typography className={classes.title} color="textSecondary" gutterBottom>
                     {amount} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['fromSymbol'])).name} = 
                 </Typography>
-                {rate? 
                 <Typography variant="h5" component="h2">
-                {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
-                </Typography> :
-                <CircularProgress />
-            }
+                    {amount * get(rate, [`${get(symbol, ['fromSymbol'])}_${get(symbol, ['toSymbol'])}`])} {' '} { CURRENCY_SYMBOL.find(item => item.cc === get(symbol, ['toSymbol'])).name }
+                </Typography> 
             </Grid> :
             <Grid item xs={12} className={classes.button}>  
                 <FormControl >
