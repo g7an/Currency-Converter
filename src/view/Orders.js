@@ -12,6 +12,7 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { red, green } from '@material-ui/core/colors';
 import {getCurrentDate} from '../services/helper'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Generate Order Data
 function createData(index, cPair, rate, change) {
@@ -82,6 +83,18 @@ export default function Orders() {
         console.error(error)
       }
   }
+
+  const RenderLoading = () => (
+    <TableBody>
+      <TableRow>
+        <TableCell />
+        <TableCell>
+          <CircularProgress />
+        </TableCell>
+        <TableCell />
+      </TableRow>
+    </TableBody>
+  )
 
   const processData = () => {
     let count = 1
