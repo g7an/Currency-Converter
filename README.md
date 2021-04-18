@@ -10,7 +10,7 @@
 
 ### Background
 
-Currency Converter is a React App I made out of the purpose of code practising while I'm working full time as a software developer. All the functions are realized out of simple React components and hooks. The UI of this app has used plenty of [Material UI](https://material-ui.com/), which is a helpful UI library that saves me a lot of headache on UI design. 
+Currency Converter is a React App I made out of the purpose of code practising while I'm working full time as a software developer. All the functions are realized by simple React components and hooks. The UI of this app has used plenty of [Material UI](https://material-ui.com/), which is a helpful UI library that saves me a lot of headache on UI design. 
 
 All the data of this app is from [The Free Currency Converter API](https://free.currencyconverterapi.com/). It offers nice and generous api service allowing 100 calls per hours with no charge. However, as stated in its documents, it offers no waranty on the accuracy. And as requested, the detailed licence is as below:
 
