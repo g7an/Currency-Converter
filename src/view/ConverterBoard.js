@@ -8,14 +8,14 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import ConverterForm from './ConverterForm';
-import Orders from './Orders';
+import CommonCurrencyPairs from './CommonCurrencyPairs';
 import Bars  from './Bars';
 
 function Declaration() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {'Made by '}
-        <Link color="inherit" href="https://material-ui.com/">
+        <Link color="inherit" href="https://github.com/g7an">
           Gloria Tan
         </Link>
         {' using '}
@@ -129,10 +129,10 @@ const DashBoard = () => {
                           <ConverterForm />
                       </Paper>
                       </Grid>
-                      {/* Recent Orders */}
+                      {/* Currency Pairs */}
                       <Grid item xs={12}>
                       <Paper className={classes.paper}>
-                          <Orders />
+                          <CommonCurrencyPairs />
                       </Paper>
                       </Grid>
                   </Grid>

@@ -43,7 +43,6 @@ export default function Chart() {
   const getData = (input) => {
     console.log(input)
     for (const time in input) {
-      // console.log(`${time}: ${input[time]}`);
       dataTemp.push(createData(time, input[time]))
     }
     setData(dataTemp)

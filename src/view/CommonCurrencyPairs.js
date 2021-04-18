@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 // AUD_USD (Australian dollar/US dollar)
 // USD_CAD (US dollar/Canadian dollar)
 // USD_CNY (US dollar/Chinese renminbi)
-export default function Orders() {
+export default function CommonCurrencyPairs() {
   const classes = useStyles();
   const [data, setData] = useState();
   const [table, setTable] = useState();
@@ -67,9 +67,9 @@ export default function Orders() {
   async function handleData() {
     try {      
       //  due to the pair limitation of free api (only 2 pairs can be called each time), api will be called 3 times
-        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
-        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
-        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
+        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}}`)
+        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}}`)
+        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}}`)
       setData(prevValues => ({
         ...prevValues,
         'EUR / USD': get(res1, ['data', 'EUR_USD']),
@@ -119,7 +119,7 @@ export default function Orders() {
         </TableHead>
         {table && table.length > 0 ?
         <TableBody>
-          {table && table.length > 0 && table.map((row) => (
+          {table.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.cPair}</TableCell>
               <TableCell>{row.rate}</TableCell>

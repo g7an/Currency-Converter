@@ -19,11 +19,7 @@ export default function Routes() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/" component={DashBoard} exact />
-            {/* <Dashboard /> */}
-          {/* </Route> */}
           <Route path="/converter" component={ConverterBoard} />
-            {/* <ConverterForm />
-          </Route> */}
         </Switch>
     </Router>
   )

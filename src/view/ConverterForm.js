@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import axios from 'axios'
 import get from 'lodash/get'
 import Grid from '@material-ui/core/Grid'
-import { CURRENCY_SYMBOL, CURRENCY_LIST } from '../constants/data'
+import { CURRENCY_SYMBOL } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
 

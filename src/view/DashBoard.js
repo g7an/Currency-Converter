@@ -15,7 +15,7 @@ function Declaration() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {'Made by '}
-        <Link color="inherit" href="https://material-ui.com/">
+        <Link color="inherit" href="https://github.com/g7an">
           Gloria Tan
         </Link>
         {' using '}
@@ -130,9 +130,7 @@ const DashBoard = () => {
                       </Paper>
                       </Grid>
                       <Grid item xs={12}>
-                      {/* <Paper className={classes.paper}> */}
                           <Intro />
-                      {/* </Paper> */}
                       </Grid>
                   </Grid>
                 <Box pt={4}>
