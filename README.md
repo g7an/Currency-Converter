@@ -26,8 +26,7 @@ All the data of this app is from [The Free Currency Converter API](https://free.
 
 ### Demo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+TBC
 
 ### Installation
 
@@ -40,5 +39,12 @@ Install all the dependencies:
 ```
 $ npm install
 ```
+If you want to receive the data from the api, register an account from [The Free Currency Converter API](https://free.currencyconverterapi.com/), and add it to your .env file. An example .env file is as below:
 
+```
+REACT_APP_BACKEND_API_PROTOCOL=https://
+REACT_APP_BACKEND_API_HOST=free.currconv.com/api
+REACT_APP_BACKEND_API_VERSION=/v7
+REACT_APP_API_KEY=[ADD_YOUR_API_KEY_HERE]
+```
 
