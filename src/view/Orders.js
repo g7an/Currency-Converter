@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,14 +6,12 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
-import get from 'lodash/get';
-import axios from 'axios';
-import { bindActionCreators } from 'redux';
+import get from 'lodash/get'
+import axios from 'axios'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { red, green } from '@material-ui/core/colors';
-import {getCurrentDate} from '../services/helper';
-import { CircularProgress } from '@material-ui/core';
+import {getCurrentDate} from '../services/helper'
 
 // Generate Order Data
 function createData(index, cPair, rate, change) {
@@ -23,13 +20,15 @@ function createData(index, cPair, rate, change) {
 
 const rows = []
 
+function preventDefault(event) {
+  event.preventDefault();
+}
+
 const useStyles = makeStyles((theme) => ({
   seeMore: {
     marginTop: theme.spacing(3),
   },
 }));
-
-
 
 
 // EUR_USD (euro/US dollar)
@@ -63,26 +62,13 @@ export default function Orders() {
         <ArrowDropUpIcon style={{ color: green[500] }}/>
   }
 
-  const RenderLoading = () => (
-    <TableBody>
-      <TableRow>
-        <TableCell />
-        <TableCell>
-          <CircularProgress />
-        </TableCell>
-        <TableCell />
-      </TableRow>
-    </TableBody>
-  )
-
 
   async function handleData() {
     try {      
       //  due to the pair limitation of free api (only 2 pairs can be called each time), api will be called 3 times
-      console.log(getCurrentDate(1), getCurrentDate(0))
-        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}`)
-        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}`)
-        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=${process.env.REACT_APP_API_KEY}`)
+        const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
+        const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
+        const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
       setData(prevValues => ({
         ...prevValues,
         'EUR / USD': get(res1, ['data', 'EUR_USD']),
@@ -100,11 +86,6 @@ export default function Orders() {
   const processData = () => {
     let count = 1
     for (let cPair in data) {
-      // console.log(data, getCurrentDate(1), getCurrentDate(0))
-      // console.log(`${cPair}: ${get(data[cPair], [getCurrentDate(2)])}, ${get(data[cPair], [getCurrentDate(0)])}`)
-      console.log('compare rate pass in: ')
-      console.log(get(data[cPair], [getCurrentDate(2)]))
-      console.log(get(data[cPair], [getCurrentDate(1)]))
       let changeSign = compareRate(get(data[cPair], [getCurrentDate(2)]), get(data[cPair], [getCurrentDate(1)]))
       rows.push(createData(count, cPair, get(data[cPair], [getCurrentDate(1)]), changeSign))
       count++
@@ -125,7 +106,7 @@ export default function Orders() {
         </TableHead>
         {table && table.length > 0 ?
         <TableBody>
-        {table.map((row) => (
+          {table && table.length > 0 && table.map((row) => (
             <TableRow key={row.id}>
               <TableCell>{row.cPair}</TableCell>
               <TableCell>{row.rate}</TableCell>

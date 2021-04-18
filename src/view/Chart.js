@@ -7,8 +7,8 @@ import get from 'lodash/get'
 import SelectFields from './SelectFields'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
-import { getCurrentDate } from '../services/helper'
-import { CircularProgress } from '@material-ui/core';
+import {getCurrentDate} from '../services/helper'
+
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -66,8 +66,6 @@ export default function Chart() {
         console.error(error)
       }
   }
-  console.log(symbol)
-  console.log(data)
 
   return (
     <React.Fragment>
