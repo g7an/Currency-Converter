@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid'
 import { CURRENCY_SYMBOL, CURRENCY_LIST } from '../constants/data'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import NumberFormatter from '../services/NumberFormatter'
-import clsx from 'clsx'
 
 
 const useStyles = makeStyles((theme) => ({

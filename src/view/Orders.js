@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,7 +8,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import get from 'lodash/get'
 import axios from 'axios'
-import { bindActionCreators } from 'redux';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { red, green } from '@material-ui/core/colors';
@@ -68,42 +66,9 @@ export default function Orders() {
   async function handleData() {
     try {      
       //  due to the pair limitation of free api (only 2 pairs can be called each time), api will be called 3 times
-      console.log(getCurrentDate(1), getCurrentDate(0))
         const res1 = await axios.get(`https://free.currconv.com/api/v7/convert?q=EUR_USD,USD_JPY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
         const res2 = await axios.get(`https://free.currconv.com/api/v7/convert?q=GBP_USD,AUD_USD&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
         const res3 = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_CAD,USD_CNY&compact=ultra&date=${getCurrentDate(2)}&endDate=${getCurrentDate(1)}&apiKey=eaf0690418fe15dd0f48`)
-      // const res1 = {
-      //     "USD_EUR": {
-      //         "2021-04-08": 0.839102,
-      //         "2021-04-09": 0.840336
-      //     },
-      //     "USD_JPY": {
-      //         "2021-04-08": 109.328505,
-      //         "2021-04-09": 109.66204
-      //     }
-      // }
-      // const res2 = {
-      //   "GBP_USD": {
-      //       "2021-04-08": 1.373343,
-      //       "2021-04-09": 1.37085
-      //   },
-      //   "AUD_USD": {
-      //       "2021-04-08": 0.765685,
-      //       "2021-04-09": 0.7622
-      //   }
-      // }
-      // const res3 = {
-      //   "USD_CAD": {
-      //       "2021-04-08": 1.256365,
-      //       "2021-04-09": 1.253035
-      //   },
-      //   "USD_CNY": {
-      //       "2021-04-08": 6.551097,
-      //       "2021-04-09": 6.553041
-      //   }
-      // }
-      // console.log(res1)
-      // console.log(compareRate(get(res1, ['USD_EUR', '2021-04-08']), get(res2, ['USD_EUR', '2021-04-09'])))
       setData(prevValues => ({
         ...prevValues,
         'EUR / USD': get(res1, ['data', 'EUR_USD']),
@@ -121,22 +86,14 @@ export default function Orders() {
   const processData = () => {
     let count = 1
     for (let cPair in data) {
-      // console.log(data, getCurrentDate(1), getCurrentDate(0))
-      // console.log(`${cPair}: ${get(data[cPair], [getCurrentDate(2)])}, ${get(data[cPair], [getCurrentDate(0)])}`)
       console.log('compare rate pass in: ')
       console.log(get(data[cPair], [getCurrentDate(2)]))
       console.log(get(data[cPair], [getCurrentDate(1)]))
       let changeSign = compareRate(get(data[cPair], [getCurrentDate(2)]), get(data[cPair], [getCurrentDate(1)]))
       rows.push(createData(count, cPair, get(data[cPair], [getCurrentDate(1)]), changeSign))
-      // rows.push(createData('USD_CNY', '7.123', 'low'))
       count++
     }
     setTable(rows)
-    
-    // for (const time in input) {
-    //   // console.log(`${time}: ${input[time]}`);
-    //   data.push(createData(time, input[time]))
-    // }
   }
   
   return (
